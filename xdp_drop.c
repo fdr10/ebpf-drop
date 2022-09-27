@@ -31,5 +31,23 @@ int xdp_drop_ipv6_prog(struct xdp_md *ctx){
         return XDP_DROP;
 
     return XDP_PASS;
-} 
+}
+
+SEC("xdp_ip_filter")
+int _xdp_ip_filter(struct xdp_md *ctx) {
+    // key of the maps
+    __u32 key = 0;
+    // the ip to filter
+    __u32 *ip;
+
+    bpf_printk("starting xdp ip filter\n");
+
+    // get the ip to filter from the ip_filtered map
+    ip = bpf_map_lookup_elem(&ip_map, &key);
+    if (!ip){
+        return XDP_PASS;
+    }
+    bpf_printk("the ip address to filter is %u\n", ip);
+    return XDP_DROP;
+}
 char _license[] SEC("license") ="GPL";
