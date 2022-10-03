@@ -33,6 +33,13 @@ int xdp_drop_ipv6_prog(struct xdp_md *ctx){
     return XDP_PASS;
 }
 
+struct bpf_map_def SEC("maps") ip_map = {
+	.type        = BPF_MAP_TYPE_HASH,
+	.key_size    = sizeof(__u32),
+	.value_size  = sizeof(__u32),
+	.max_entries = 1,
+};
+
 SEC("xdp_ip_filter")
 int _xdp_ip_filter(struct xdp_md *ctx) {
     // key of the maps
