@@ -22,11 +22,10 @@ load-xdp: ebpf-simple-drop
 
 .PHONY: unload-xdp
 unload-xdp: 
-	@sudo ip link set eth10 xdpgeneric off
+	@sudo ip link set eth0 xdpgeneric off
 
 
 .PHONY: clean
 clean:
 	sudo ip netns del ns01 
-	sudo ip link del eth0 
 
